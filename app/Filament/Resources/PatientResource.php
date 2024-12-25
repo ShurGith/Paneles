@@ -96,7 +96,10 @@
                     Tables\Columns\TextColumn::make('date_of_birth')
                         ->label('Año Nacimiento')
                         ->date('Y'),
-                    Tables\Columns\TextColumn::make('owner.name')->label('Propietario'),
+                    Tables\Columns\TextColumn::make('owner.name')
+                        ->label('Propietario')
+                        ->searchable()
+                        ->sortable(),
                     Tables\Columns\TextColumn::make('user.name')->label('Veterinario'),
                 ])
                 ->filters([
@@ -104,8 +107,8 @@
                 ])
                 ->actions([
                     Tables\Actions\EditAction::make()
-                        ->color('secondary')
-                        ->icon('heroicon-s-pencil-square')
+                     /*   ->color('secondary')
+                        ->icon('heroicon-s-pencil-square')*/
                         ->slideover(),
                 ])
                 ->bulkActions([
@@ -127,7 +130,7 @@
             return [
                 'index' => Pages\ListPatients::route('/'),
                 'create' => Pages\CreatePatient::route('/create'),
-                'edit' => Pages\EditPatient::route('/{record}/edit'),
+                //'edit' => Pages\EditPatient::route('/{record}/edit'),
             ];
         }
     }
