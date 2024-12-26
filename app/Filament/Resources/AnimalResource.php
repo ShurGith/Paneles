@@ -29,13 +29,10 @@
                 ->schema([
                     TextInput::make('name')
                         ->label('Nombre'),
-                    Select::make('raza')
+                    Select::make('razas')
                         ->multiple()
                         ->relationship('raza', 'name')
                         ->searchable()
-//                        ->options([
-//                            Raza::all()->pluck('name', 'id')->toArray()
-//                        ])
                         ->preload(),
                 ]);
         }
@@ -45,11 +42,8 @@
             return $table
                 ->columns([
                     TextColumn::make('name')->label('Nombre'),
-                    Tables\Columns\TextColumn::make('raza')
+                    TextColumn::make('raza.name')
                         ->label('Razas')
-                        ->getStateUsing(fn($record) => collect($record->raza)
-                            ->pluck('name')
-                            ->map(fn($name) => Str::headline(str_replace('_', ' ', $name))))
                         ->colors([
                             'warning',
                         ])

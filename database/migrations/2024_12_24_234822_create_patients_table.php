@@ -21,7 +21,7 @@
                 $table->foreignId('animal_id')->constrained('animals')->cascadeOnDelete();
                 $table->foreignId('user_id')->constrained('users');
                 $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
-                // $table->json('raza_id')->nullable();
+                $table->json('raza_id')->nullable();
                 $table->timestamps();
             });
 

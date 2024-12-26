@@ -4,12 +4,16 @@
 
     use App\Filament\Resources\PatientResource\Pages;
     use App\Filament\Resources\PatientResource\RelationManagers;
+    use App\Models\Animal_Raza;
     use App\Models\Patient;
+    use App\Models\Raza;
     use Filament\Forms\Components\DatePicker;
     use Filament\Forms\Components\FileUpload;
     use Filament\Forms\Components\Select;
     use Filament\Forms\Components\TextInput;
     use Filament\Forms\Form;
+    use Filament\Forms\Get;
+    use Filament\Forms\Set;
     use Filament\Resources\Resource;
     use Filament\Tables\Actions\BulkActionGroup;
     use Filament\Tables\Actions\DeleteBulkAction;
@@ -18,6 +22,8 @@
     use Filament\Tables\Columns\ImageColumn;
     use Filament\Tables\Columns\TextColumn;
     use Filament\Tables\Table;
+    use Illuminate\Support\Collection;
+    use Illuminate\Support\Facades\DB;
     use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
     class PatientResource extends Resource
@@ -29,6 +35,23 @@
         protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
         protected static ?int $navigationSort = 2;
 
+            public static function getAnimales($id): array
+            {
+                $razas =
+                DB::table('animal_raza')
+                ->where('animal_id', $id)
+                ->pluck('raza_id');
+
+                dd($razas);
+                $names = [];
+                foreach ($razas as $raza) {
+                    $names[] = DB::table('razas')
+                        ->where('id', $raza->raza_id)
+                        ->value('name');
+                }
+
+                return $names;
+            }
         public static function form(Form $form): Form
         {
             return $form
@@ -36,40 +59,31 @@
                     TextInput::make('name')
                         ->label('Nombre')
                         ->required(),
-                    Select::make('type')
-                        ->label('Animal')
-                        ->options([
-                            Patient::all()->pluck('type', 'type')->toArray()
-                        ])
-                        ->searchable()
-                        ->required(),
-                    Select::make('raza')
-                        ->label('Raza')
-                        ->options([
-                            Patient::pluck('raza', 'raza')->toArray()
-                        ])
-                        ->preload()
-                        ->searchable(),
-                    /*  ->createOptionForm([
-                              Section::make('Create New Value')
-                                  ->columns(1)
-                                  ->schema([
-                                      TextInput::make('raza')
-                                          ->label('Nueva Raza')
-                                          ->placeholder('Type a new value if none of the options are valid')
-                                          ->helperText('If none of the options are valid, you can type a new value here.')
-                                  ])
-                          ]
-                      ),*/
-
                     Select::make('gender')
                         ->label('Sexo')
                         ->options([
-                            'Hembra' => 'Hembra',
-                            'Macho' => 'Macho',
+                            Patient::all()->pluck('gender', 'gender')->toArray()
                         ])
                         ->searchable()
                         ->required(),
+                    Select::make('razas')
+                        ->multiple()
+                      //  ->relationship('raza', 'name')
+                        ->searchable()
+                        ->live()
+                        ->options(
+                            fn(Get $get): Collection => Raza::query()
+                                ->where('id', $get('raza_id'))
+                                ->pluck('name', 'id')
+                           // self::getAnimales(fn($record) => $record->animal_id)
+                        ),
+                    Select::make('animal')
+                        ->relationship('animal', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->live()
+                        ->afterStateUpdated(fn(Set $set) => $set('razas', null)),
+
                     DatePicker::make('date_of_birth')
                         ->label('Fecha de Nacimiento')
                         ->default(now())
@@ -125,14 +139,15 @@
                             return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
                         }),
                     TextColumn::make('name')->label('Nombre'),
+                    TextColumn::make('animal.name')->label('Animal'),
                     TextColumn::make('gender')->label('Sexo'),
                     TextColumn::make('raza.name')->label('Raza')
                         ->badge(),
                     //  ->description(),
                     // TextColumn::make('type')->label('Animal'),
-                    TextColumn::make('date_of_birth')
+                  /*  TextColumn::make('date_of_birth')
                         ->label('Año Nacimiento')
-                        ->date('Y'),
+                        ->date('Y'),*/
                     TextColumn::make('owner.name')
                         ->label('Propietario')
                         ->searchable()
