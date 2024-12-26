@@ -53,7 +53,7 @@
 
           //  User::factory(10)->create();
          //   Owner::factory(10)->create();
-            Patient::factory(1)->create();
+            Patient::factory(10)->create();
           //  Treatment::factory(15)->create();
         }
     }

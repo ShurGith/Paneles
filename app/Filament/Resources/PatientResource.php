@@ -41,7 +41,7 @@
                     ->where('animal_id', $id)
                     ->pluck('raza_id');
 
-            dd($razas);
+         //   dd($razas);
             $names = [];
             foreach ($razas as $raza) {
                 $names[] = DB::table('razas')
@@ -116,12 +116,12 @@
                         ->options(
                             fn(Get $get): Collection => Raza::query()
                                 ->where('animal_id', $get('animal_id'))
-                                ->pluck('id', 'name')
+                                ->pluck('name', 'id')
                         )
                         ->preload()
                         ->searchable()
                         ->live(),
-                    Select::make('animal')
+                    Select::make('animal_id')
                         ->relationship('animal', 'name')
                         ->searchable()
                         ->preload()
