@@ -12,7 +12,6 @@
     use Filament\Resources\Resource;
     use Filament\Tables;
     use Filament\Tables\Table;
-    use Illuminate\Support\Facades\DB;
 
     class RazaResource extends Resource
     {
@@ -62,13 +61,13 @@
                         ->dateTime()
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: true),
-                ])
+                ])->defaultSort('animal.name')
                 ->filters([
                     //
                 ])
                 ->actions([
                     Tables\Actions\EditAction::make()
-                    ->slideOver(),
+                        ->slideOver(),
                 ])
                 ->bulkActions([
                     Tables\Actions\BulkActionGroup::make([
@@ -88,8 +87,8 @@
         {
             return [
                 'index' => Pages\ListRazas::route('/'),
-               // 'create' => Pages\CreateRaza::route('/create'),
-               //'edit' => Pages\EditRaza::route('/{record}/edit'),
+                // 'create' => Pages\CreateRaza::route('/create'),
+                //'edit' => Pages\EditRaza::route('/{record}/edit'),
             ];
         }
     }

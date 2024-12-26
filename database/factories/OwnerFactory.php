@@ -16,9 +16,7 @@
                 'email' => $this->faker->unique()->safeEmail(),
                 'name' => $this->faker->name(),
                 'phone' => $this->faker->phoneNumber(),
-                //'photo' => $this->faker->word(),
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ];
         }
     }

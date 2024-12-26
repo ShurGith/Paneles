@@ -21,7 +21,7 @@
          */
         public function run(): void
         {
-       /*     User::factory()->create([
+            User::factory()->create([
                 'name' => 'JuanJota',
                 'email' => 'esnola@gmail.com',
                 'password' => Hash::make('1234'),
@@ -34,7 +34,7 @@
                 'phone' => '188898721',
                 'password' => Hash::make('1234'),
             ]);
-         $animales = ['Gato', 'Perro', 'Pez', 'Tortuga', 'Gallina', 'Loro', 'Vaca', 'Caballo'];
+            $animales = ['Gato', 'Perro', 'Pez', 'Tortuga', 'Gallina', 'Loro', 'Vaca', 'Caballo'];
             foreach ($animales as $animal) {
                 Animal::factory()->create([
                     'name' => $animal
@@ -48,12 +48,12 @@
                     'name' => $raza,
                     'animal_id' => Animal::inRandomOrder()->value('id'),
                 ]);
-            }*/
+            }
 
 
-          //  User::factory(10)->create();
-         //   Owner::factory(10)->create();
+            User::factory(10)->create();
+            Owner::factory(10)->create();
             Patient::factory(10)->create();
-          //  Treatment::factory(15)->create();
+            Treatment::factory(15)->create();
         }
     }
