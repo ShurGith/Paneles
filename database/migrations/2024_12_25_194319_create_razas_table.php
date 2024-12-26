@@ -13,7 +13,7 @@
             Schema::create('razas', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
-                //$table->foreignId('animal_id')->constrained('animals')->cascadeOnDelete();
+                $table->foreignId('animal_id')->index()->constrained('animals')->cascadeOnDelete();
                 $table->timestamps();
             });
         }

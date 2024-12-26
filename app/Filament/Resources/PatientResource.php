@@ -4,7 +4,6 @@
 
     use App\Filament\Resources\PatientResource\Pages;
     use App\Filament\Resources\PatientResource\RelationManagers;
-    use App\Models\Animal_Raza;
     use App\Models\Patient;
     use App\Models\Raza;
     use Filament\Forms\Components\DatePicker;
@@ -35,23 +34,69 @@
         protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
         protected static ?int $navigationSort = 2;
 
-            public static function getAnimales($id): array
-            {
-                $razas =
+        public static function getAnimales($id): array
+        {
+            $razas =
                 DB::table('animal_raza')
-                ->where('animal_id', $id)
-                ->pluck('raza_id');
+                    ->where('animal_id', $id)
+                    ->pluck('raza_id');
 
-                dd($razas);
-                $names = [];
-                foreach ($razas as $raza) {
-                    $names[] = DB::table('razas')
-                        ->where('id', $raza->raza_id)
-                        ->value('name');
-                }
-
-                return $names;
+            dd($razas);
+            $names = [];
+            foreach ($razas as $raza) {
+                $names[] = DB::table('razas')
+                    ->where('id', $raza->raza_id)
+                    ->value('name');
             }
+
+            return $names;
+        }
+
+        public static function table(Table $table): Table
+        {
+            return $table
+                ->columns([
+                    ImageColumn::make('photo')
+                        ->label('Foto')
+                        ->circular()
+                        ->defaultImageUrl(function ($record) {
+                            return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
+                        }),
+                    TextColumn::make('name')->label('Nombre'),
+                    TextColumn::make('animal.name')->label('Animal'),
+                    TextColumn::make('gender')->label('Sexo'),
+                    TextColumn::make('raza.name')->label('Raza')
+                        ->badge(),
+                    //  ->description(),
+                    // TextColumn::make('type')->label('Animal'),
+                    /*  TextColumn::make('date_of_birth')
+                          ->label('Año Nacimiento')
+                          ->date('Y'),*/
+                    TextColumn::make('owner.name')
+                        ->label('Propietario')
+                        ->searchable()
+                        ->sortable(),
+                    TextColumn::make('user.name')->label('Veterinario'),
+                ])
+                ->filters([
+                    //
+                ])
+                ->actions([
+                    ViewAction::make()
+                        ->color('info')
+                        ->slideOver(),
+                    EditAction::make()
+                        /*   ->color('secondary')
+                           ->icon('heroicon-s-pencil-square')*/
+                        ->slideover(),
+                ])
+                ->bulkActions([
+                    BulkActionGroup::make([
+                        DeleteBulkAction::make(),
+                    ]),
+                ]);
+        }
+
         public static function form(Form $form): Form
         {
             return $form
@@ -66,17 +111,16 @@
                         ])
                         ->searchable()
                         ->required(),
-                    Select::make('razas')
-                        ->multiple()
-                      //  ->relationship('raza', 'name')
-                        ->searchable()
-                        ->live()
+                    Select::make('raza_id')
+                        ->label('Raza')
                         ->options(
                             fn(Get $get): Collection => Raza::query()
-                                ->where('id', $get('raza_id'))
-                                ->pluck('name', 'id')
-                           // self::getAnimales(fn($record) => $record->animal_id)
-                        ),
+                                ->where('animal_id', $get('animal_id'))
+                                ->pluck('id', 'name')
+                        )
+                        ->preload()
+                        ->searchable()
+                        ->live(),
                     Select::make('animal')
                         ->relationship('animal', 'name')
                         ->searchable()
@@ -125,51 +169,6 @@
                         ->searchable()
                         ->preload()
                         ->required(),
-                ]);
-        }
-
-        public static function table(Table $table): Table
-        {
-            return $table
-                ->columns([
-                    ImageColumn::make('photo')
-                        ->label('Foto')
-                        ->circular()
-                        ->defaultImageUrl(function ($record) {
-                            return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
-                        }),
-                    TextColumn::make('name')->label('Nombre'),
-                    TextColumn::make('animal.name')->label('Animal'),
-                    TextColumn::make('gender')->label('Sexo'),
-                    TextColumn::make('raza.name')->label('Raza')
-                        ->badge(),
-                    //  ->description(),
-                    // TextColumn::make('type')->label('Animal'),
-                  /*  TextColumn::make('date_of_birth')
-                        ->label('Año Nacimiento')
-                        ->date('Y'),*/
-                    TextColumn::make('owner.name')
-                        ->label('Propietario')
-                        ->searchable()
-                        ->sortable(),
-                    TextColumn::make('user.name')->label('Veterinario'),
-                ])
-                ->filters([
-                    //
-                ])
-                ->actions([
-                    ViewAction::make()
-                        ->color('info')
-                        ->slideOver(),
-                    EditAction::make()
-                        /*   ->color('secondary')
-                           ->icon('heroicon-s-pencil-square')*/
-                        ->slideover(),
-                ])
-                ->bulkActions([
-                    BulkActionGroup::make([
-                        DeleteBulkAction::make(),
-                    ]),
                 ]);
         }
 

@@ -12,8 +12,8 @@
         public function definition(): array
         {
             return [
-                'name' => $this->faker->randomElement(['Persa', 'Maine Coon', 'Collin', 'Siamés', 'Coker', 'YorkShire', 'Bulldog', 'Labrador', 'Poodle', 'Golden Retriever', 'Siames', 'Pomeranian', 'Chihuahua', 'Bull Terrier', 'Podenco']),
-                // 'animal_id' => Animal::inRandomOrder()->value('id') ?: Animal::Factory(),
+//                'name' => $this->faker->randomElement(['Persa', 'Maine Coon', 'Collin', 'Siamés', 'Coker', 'YorkShire', 'Bulldog', 'Labrador', 'Poodle', 'Golden Retriever', 'Siames', 'Pomeranian', 'Chihuahua', 'Bull Terrier', 'Podenco']),
+//                'animal_id' => Animal::inRandomOrder()->value('id'),// ?: Animal::Factory(),
             ];
         }
     }

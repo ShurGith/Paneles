@@ -1,23 +1,23 @@
 <?php
 
-	namespace App\Models;
+    namespace App\Models;
 
-	use Illuminate\Database\Eloquent\Factories\HasFactory;
-	use Illuminate\Database\Eloquent\Model;
-	use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-	use Illuminate\Notifications\Notifiable;
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Notifications\Notifiable;
 
-	class Animal extends Model
-	{
-		use HasFactory, Notifiable;
+    class Animal extends Model
+    {
+        use HasFactory, Notifiable;
 
-		protected $guarded = [];
-		protected $casts = [
-			'raza' => 'array',
-		];
+        protected $guarded = [];
+        protected $casts = [
+            //   'raza' => 'array',
+        ];
 
-		public function raza(): BelongsToMany
-		{
-			return $this->belongsToMany(Raza::class);
-		}
-	}
+        public function raza(): HasMany
+        {
+            return $this->hasMany(Raza::class);
+        }
+    }

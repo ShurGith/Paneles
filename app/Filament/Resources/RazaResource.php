@@ -10,6 +10,7 @@
     use Filament\Resources\Resource;
     use Filament\Tables;
     use Filament\Tables\Table;
+    use Illuminate\Support\Facades\DB;
 
     class RazaResource extends Resource
     {
@@ -25,10 +26,15 @@
             return $form
                 ->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label('Raza')
                         ->required(),
-                    Forms\Components\TextInput::make('animal_id')
-                        ->required()
-                        ->numeric(),
+//                    Forms\Components\Select::make('animal')
+//                        ->options(
+//                            fn(Get $get): Collection => Animal::query()
+//                                ->orderBy('name')
+//                                ->pluck('name', 'id')
+//                        )
+//                        ->required(),
                 ]);
         }
 
@@ -37,6 +43,14 @@
             return $table
                 ->columns([
                     Tables\Columns\TextColumn::make('name')
+                        ->label('Raza')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('animal')
+                        ->exists(function ($record) {
+                            return DB::table('animals')->where('id', $record->animal_id)
+                                ->pluck('name');
+                        })
+                        ->label('Animal')
                         ->searchable(),
                     Tables\Columns\TextColumn::make('created_at')
                         ->dateTime()
