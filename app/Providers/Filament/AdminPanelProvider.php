@@ -12,6 +12,7 @@
     use Filament\Panel;
     use Filament\PanelProvider;
     use Filament\Support\Colors\Color;
+    use Filament\Support\Facades\FilamentIcon;
     use Filament\Widgets;
     use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
     use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -20,8 +21,17 @@
     use Illuminate\Session\Middleware\StartSession;
     use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+
     class AdminPanelProvider extends PanelProvider
     {
+        public function configure(): void
+        {
+            FilamentIcon::register([
+                'panels::global-search.field' => 'icon-linux',
+                'panels::sidebar.group.collapse-button' => view('icons.chevron-up'),
+            ]);
+        }
+
         public function panel(Panel $panel): Panel
         {
             return $panel
@@ -34,12 +44,12 @@
                 ->collapsedSidebarWidth('2rem')
                 ->colors([
 
-                    'danger' => Color::Red,
-                    'gray' => Color::Zinc,
-                    'info' => Color::Blue,
-                    'primary' => Color::Amber,
-                    'success' => Color::Green,
-                    'warning' => Color::Amber,
+                    'danger' => Color::hex('#B70F00FF'), //Red
+                    'gray' => Color::hex('#5F6978FF'), //Zinc,
+                    'info' => Color::hex('#2E5DA9FF'),//Info
+                    'primary' => Color::hex('#D78700FF'), //Amber,
+                    'success' => Color::hex('#108739FF'), //Green
+                    'warning' => Color::hex('#D78700FF'), //Amber,
                 ])
                 ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
                 ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

@@ -15,6 +15,7 @@
     use Filament\Forms\Set;
     use Filament\Resources\Resource;
     use Filament\Tables\Actions\BulkActionGroup;
+    use Filament\Tables\Actions\DeleteAction;
     use Filament\Tables\Actions\DeleteBulkAction;
     use Filament\Tables\Actions\EditAction;
     use Filament\Tables\Actions\ViewAction;
@@ -22,7 +23,6 @@
     use Filament\Tables\Columns\TextColumn;
     use Filament\Tables\Table;
     use Illuminate\Support\Collection;
-    use Illuminate\Support\Facades\DB;
     use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
     class PatientResource extends Resource
@@ -30,27 +30,27 @@
         protected static ?string $model = Patient::class;
         protected static ?string $navigationLabel = "Pacientes";
         protected static ?string $navigationGroup = 'Listado';
-        protected static ?string $navigationIcon = 'heroicon-o-identification';
-        protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
+        protected static ?string $navigationIcon = 'icon-dog';//'heroicon-o-identification';
+        protected static ?string $activeNavigationIcon = 'icon-dog_2';//'heroicon-o-document-text';
         protected static ?int $navigationSort = 2;
 
-        public static function getAnimales($id): array
-        {
-            $razas =
-                DB::table('animal_raza')
-                    ->where('animal_id', $id)
-                    ->pluck('raza_id');
+        /*        public static function getAnimales($id): array
+                {
+                    $razas =
+                        DB::table('animal_raza')
+                            ->where('animal_id', $id)
+                            ->pluck('raza_id');
 
-         //   dd($razas);
-            $names = [];
-            foreach ($razas as $raza) {
-                $names[] = DB::table('razas')
-                    ->where('id', $raza->raza_id)
-                    ->value('name');
-            }
+                    //   dd($razas);
+                    $names = [];
+                    foreach ($razas as $raza) {
+                        $names[] = DB::table('razas')
+                            ->where('id', $raza->raza_id)
+                            ->value('name');
+                    }
 
-            return $names;
-        }
+                    return $names;
+                }*/
 
         public static function table(Table $table): Table
         {
@@ -82,12 +82,18 @@
                     //
                 ])
                 ->actions([
+                    DeleteAction::make()
+                        ->color('danger')
+                        ->button()
+                        ->icon('heroicon-s-trash'),
                     ViewAction::make()
                         ->color('info')
-                        ->slideOver(),
+                        ->button()
+                        ->icon('heroicon-s-pencil'),
+                    //    ->slideOver(),
                     EditAction::make()
-                        /*   ->color('secondary')
-                           ->icon('heroicon-s-pencil-square')*/
+                        ->color('success')
+                        ->button()
                         ->slideover(),
                 ])
                 ->bulkActions([
@@ -184,6 +190,7 @@
             return [
                 'index' => Pages\ListPatients::route('/'),
                 'create' => Pages\CreatePatient::route('/create'),
+                'view' => Pages\ViewPatient::route('/{record}'),
                 //'edit' => Pages\EditPatient::route('/{record}/edit'),
             ];
         }

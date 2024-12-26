@@ -15,7 +15,7 @@
         protected static ?string $model = Treatment::class;
         protected static ?string $navigationLabel = "Tratamientos";
         protected static ?string $navigationGroup = 'Listado';
-        protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+        protected static ?string $navigationIcon = 'icon-linux';//'heroicon-o-banknotes';
         //protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
         protected static ?int $navigationSort = 3;
 

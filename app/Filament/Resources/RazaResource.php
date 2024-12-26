@@ -66,8 +66,8 @@
                     //
                 ])
                 ->actions([
-                    Tables\Actions\EditAction::make()
-                        ->slideOver(),
+                    Tables\Actions\EditAction::make(),
+
                 ])
                 ->bulkActions([
                     Tables\Actions\BulkActionGroup::make([
