@@ -16,11 +16,10 @@
                 $table->string('name');
                 $table->string('photo')->nullable();
                 $table->enum('gender', ['Macho', 'Hembra'])->nullable();
-                $table->foreignId('animal_id')->index()->constrained('animals')->cascadeOnDelete();
-                $table->foreignId('raza_id')->index()->constrained('owners')->cascadeOnDelete();
-                $table->foreignId('user_id')->index()->constrained('users')->cascadeOnDelete();
-                $table->foreignId('owner_id')->index()->constrained('owners')->cascadeOnDelete();
-                //$table->json('raza_id')->nullable();
+                $table->foreignId('animal_id')->constrained('animals')->cascadeOnDelete();
+                $table->foreignId('raza_id')->constrained('razas')->cascadeOnDelete();
+                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+                $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
                 $table->timestamps();
             });
 

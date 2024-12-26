@@ -4,9 +4,11 @@
 
     use App\Filament\Resources\RazaResource\Pages;
     use App\Filament\Resources\RazaResource\RelationManagers;
+    use App\Models\Animal;
     use App\Models\Raza;
     use Filament\Forms;
     use Filament\Forms\Form;
+    use Filament\Forms\Get;
     use Filament\Resources\Resource;
     use Filament\Tables;
     use Filament\Tables\Table;
@@ -28,13 +30,15 @@
                     Forms\Components\TextInput::make('name')
                         ->label('Raza')
                         ->required(),
-//                    Forms\Components\Select::make('animal')
-//                        ->options(
-//                            fn(Get $get): Collection => Animal::query()
-//                                ->orderBy('name')
-//                                ->pluck('name', 'id')
-//                        )
-//                        ->required(),
+                    Forms\Components\Select::make('animal_id')
+                        ->options(
+                            fn(Get $get) => Animal::query()
+                                ->orderBy('name')
+                                ->pluck('name', 'id')
+                        )
+                        ->searchable()
+                        ->label('Animal')
+                        ->required(),
                 ]);
         }
 
@@ -44,13 +48,11 @@
                 ->columns([
                     Tables\Columns\TextColumn::make('name')
                         ->label('Raza')
+                        ->sortable()
                         ->searchable(),
-                    Tables\Columns\TextColumn::make('animal')
-                        ->exists(function ($record) {
-                            return DB::table('animals')->where('id', $record->animal_id)
-                                ->pluck('name');
-                        })
+                    Tables\Columns\TextColumn::make('animal.name')
                         ->label('Animal')
+                        ->sortable()
                         ->searchable(),
                     Tables\Columns\TextColumn::make('created_at')
                         ->dateTime()
@@ -65,7 +67,8 @@
                     //
                 ])
                 ->actions([
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                    ->slideOver(),
                 ])
                 ->bulkActions([
                     Tables\Actions\BulkActionGroup::make([
@@ -85,8 +88,8 @@
         {
             return [
                 'index' => Pages\ListRazas::route('/'),
-                'create' => Pages\CreateRaza::route('/create'),
-                'edit' => Pages\EditRaza::route('/{record}/edit'),
+               // 'create' => Pages\CreateRaza::route('/create'),
+               //'edit' => Pages\EditRaza::route('/{record}/edit'),
             ];
         }
     }

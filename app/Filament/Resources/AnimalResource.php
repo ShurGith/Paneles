@@ -28,20 +28,29 @@
             return $form
                 ->schema([
                     TextInput::make('name')
-                        ->label('Nombre'),
-                    Select::make('razas')
+                        ->label('Animal')
+                        ->helperText('Es el tipo de animal Ejemplos: Perro, Gato ')
+                     //   ->hint('Usaremosste  correo para enviarte notificaciones.')
+                        ->suffixIcon('heroicon-m-globe-alt')
+                        ->suffixIconColor('secondary'),
+/*                    Select::make('razas')
                         ->multiple()
                         ->relationship('raza', 'name')
                         ->searchable()
-                        ->preload(),
+                        ->preload(),*/
                 ]);
         }
 
         public static function table(Table $table): Table
         {
             return $table
+
                 ->columns([
-                    TextColumn::make('name')->label('Nombre'),
+                    TextColumn::make('name')
+                        ->label('Nombre')
+                        ->sortable()
+                     //   ->colorlabel('info')
+                        ->searchable(),
                     TextColumn::make('raza.name')
                         ->label('Razas')
                         ->colors([
@@ -53,9 +62,16 @@
                 ->filters([
                     //
                 ])
+    /*            ->headerActions([
+                    Tables\Actions\CreateAction::make()
+                    ->slideOver(),
+                ])*/
                 ->actions([
                     Tables\Actions\EditAction::make()
                         ->slideOver(),
+                ])
+                ->emptyStateActions([
+                    Tables\Actions\CreateAction::make(),
                 ])
                 ->bulkActions([
                     Tables\Actions\BulkActionGroup::make([
@@ -75,7 +91,7 @@
         {
             return [
                 'index' => Pages\ListAnimals::route('/'),
-                'create' => Pages\CreateAnimal::route('/create'),
+                //'create' => Pages\CreateAnimal::route('/create')
                 //'edit' => Pages\EditAnimal::route('/{record}/edit'),
             ];
         }
