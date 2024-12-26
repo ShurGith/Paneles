@@ -3,23 +3,14 @@
     namespace App\Filament\Resources\OwnerResource\Pages;
 
     use App\Filament\Resources\OwnerResource;
-    use Filament\Actions;
-    use Filament\Resources\Pages\EditRecord;
+    use Filament\Resources\Pages\ViewRecord;
 
-    class EditOwner extends EditRecord
+    class ViewOwner extends ViewRecord
     {
         protected static string $resource = OwnerResource::class;
 
         public function getTitle(): string
         {
             return "Cliente: " . $this->record->name;
-        }
-
-        protected function getHeaderActions(): array
-        {
-
-            return [
-                Actions\DeleteAction::make(),
-            ];
         }
     }

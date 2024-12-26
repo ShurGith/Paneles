@@ -15,11 +15,13 @@
                 $table->date('date_of_birth')->nullable();
                 $table->string('name');
                 $table->string('photo')->nullable();
-                $table->string('type');
-                $table->string('raza')->nullable();
-                $table->enum('gender', ['Male', 'Female']);
-                $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
+                // $table->string('type');
+                //   $table->string('raza')->nullable();
+                $table->enum('gender', ['Macho', 'Hembra'])->nullable();
+                $table->foreignId('animal_id')->constrained('animals')->cascadeOnDelete();
                 $table->foreignId('user_id')->constrained('users');
+                $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
+                // $table->json('raza_id')->nullable();
                 $table->timestamps();
             });
 
