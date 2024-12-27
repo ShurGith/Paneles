@@ -34,8 +34,8 @@
             return $this->belongsTo(Raza::class);
         }
 
-//        public function treatments(): HasMany
-//        {
-//            return $this->hasMany(Treatment::class);
-//        }
+        public function treatment(): HasMany
+        {
+            return $this->hasMany(Treatment::class);
+        }
     }

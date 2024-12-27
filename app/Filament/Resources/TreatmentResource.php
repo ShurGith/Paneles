@@ -5,6 +5,8 @@
     use App\Filament\Resources\TreatmentResource\Pages;
     use App\Filament\Resources\TreatmentResource\RelationManagers;
     use App\Models\Treatment;
+    use Filament\Forms\Components\RichEditor;
+    use Filament\Forms\Components\Section;
     use Filament\Forms\Form;
     use Filament\Resources\Resource;
     use Filament\Tables;
@@ -23,29 +25,42 @@
         {
             return $form
                 ->schema([
-                    //
+//                    TextInput::make('patient.name')
+//                        ->label('Paciente'),
+                    Section::make('Descripción de todos los datos')
+                        ->description('Prevent abuse by limiting the number of requests per period')
+                        ->schema([
+                            RichEditor::make('description')
+                        ]),
+                    Section::make('Notas y otras cosas')
+                        ->description('Prevent abuse by limiting the number of requests per period')
+                        ->schema([
+                            RichEditor::make('notes')
+                        ]),
                 ]);
         }
 
         public static function table(Table $table): Table
         {
             return $table
+                 Section::make('Descripción de todos los datos')
                 ->columns([Tables\Columns\TextColumn::make('patient.name')
                     ->label('Paciente')
                     ->sortable(),
                     Tables\Columns\TextColumn::make('description')
                         ->label('Descripción')
-                        ->sortable(),
+                        ->html()
+                        ->wrap(),
                     Tables\Columns\TextColumn::make('notes')
                         ->label('Notas')
-                        ->sortable()
+                        ->html()
+                        ->wrap()
                 ])
                 ->filters([
                     //
                 ])
                 ->actions([
-                    Tables\Actions\EditAction::make()
-                        ->slideOver(),
+                    Tables\Actions\EditAction::make(),
                 ])
                 ->bulkActions([
                     Tables\Actions\BulkActionGroup::make([
@@ -66,7 +81,7 @@
             return [
                 'index' => Pages\ListTreatments::route('/'),
                 'create' => Pages\CreateTreatment::route('/create'),
-                //'edit' => Pages\EditTreatment::route('/{record}/edit'),
+                'edit' => Pages\EditTreatment::route('/{record}/edit'),
             ];
         }
     }
