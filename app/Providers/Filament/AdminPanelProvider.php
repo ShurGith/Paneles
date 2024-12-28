@@ -7,6 +7,7 @@
     use Filament\Http\Middleware\AuthenticateSession;
     use Filament\Http\Middleware\DisableBladeIconComponents;
     use Filament\Http\Middleware\DispatchServingFilamentEvent;
+    use Filament\Infolists\Infolist;
     use Filament\Navigation\MenuItem;
     use Filament\Pages;
     use Filament\Panel;
@@ -30,6 +31,11 @@
                 'panels::global-search.field' => 'icon-linux',
                 'panels::sidebar.group.collapse-button' => view('icons.chevron-up'),
             ]);
+        }
+
+        public function boot(): void
+        {
+            Infolist::$defaultNumberLocale = 'es';
         }
 
         public function panel(Panel $panel): Panel

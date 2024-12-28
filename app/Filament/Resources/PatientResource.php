@@ -13,6 +13,11 @@
     use Filament\Forms\Form;
     use Filament\Forms\Get;
     use Filament\Forms\Set;
+    use Filament\Infolists\Components\ImageEntry;
+    use Filament\Infolists\Components\RepeatableEntry;
+    use Filament\Infolists\Components\Section;
+    use Filament\Infolists\Components\TextEntry;
+    use Filament\Infolists\Infolist;
     use Filament\Resources\Resource;
     use Filament\Tables\Actions\BulkActionGroup;
     use Filament\Tables\Actions\DeleteAction;
@@ -34,23 +39,6 @@
         protected static ?string $activeNavigationIcon = 'icon-dog_2';//'heroicon-o-document-text';
         protected static ?int $navigationSort = 2;
 
-        /*        public static function getAnimales($id): array
-                {
-                    $razas =
-                        DB::table('animal_raza')
-                            ->where('animal_id', $id)
-                            ->pluck('raza_id');
-
-                    //   dd($razas);
-                    $names = [];
-                    foreach ($razas as $raza) {
-                        $names[] = DB::table('razas')
-                            ->where('id', $raza->raza_id)
-                            ->value('name');
-                    }
-
-                    return $names;
-                }*/
 
         public static function table(Table $table): Table
         {
@@ -173,13 +161,55 @@
                                 ->circleCropper(),
                         ])
                         ->required(),
-               /*     Select::make('user_id')
-                        ->relationship('user', 'name')
-                        ->label('Veterinario')
-                        ->placeholder('Vete que tome el paciente')
-                        ->searchable()
-                        ->preload()
-                        ->required(),*/
+                ]);
+        }
+
+        public static function infolist(Infolist $infolist): Infolist
+        {
+            return $infolist
+                ->schema([
+                    Section::make(fn($record) => $record->name)
+                        ->description((function ($record) {
+                            return 'Paciente creado el ' . $record->created_at->format('l d F Y');
+                        }))
+                        ->columns([
+                            'default' => 4,
+                        ])
+                        ->schema([
+                            ImageEntry::make('photo')
+                                ->label('Foto')
+                                ->circular()
+                                ->defaultImageUrl(function ($record) {
+                                    return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
+                                }),
+                            RepeatableEntry::make('treatment')
+                                ->label('Consultas')
+                                ->columnSpan(3)
+                                ->columns(2)
+                                ->schema([
+                                    //  Section::make('Datos')
+//                                        ->columns(2)
+//                                        ->schema([
+                                    TextEntry::make('price')
+                                        ->money('EUR', divideBy: 100)
+                                        ->prefix('Total: ')
+                                        ->color('primary'),
+                                    TextEntry::make('created_at')
+                                        ->getStateUsing((function ($record) {
+                                            return ucfirst($record->created_at->format('l d F Y'));
+                                        }))
+                                        ->label('Fecha de consulta'),
+
+                                    TextEntry::make('description')
+                                        ->columnSpan(2)
+                                        ->html(),
+                                    TextEntry::make('notes')
+                                        ->columnSpan(2)
+                                        ->html(),
+                                    //      ]),
+                                ]),
+                        ])
+
                 ]);
         }
 

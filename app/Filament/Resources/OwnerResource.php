@@ -66,21 +66,21 @@
                         ->label('Telf. y Correo')
                         ->html()
                         ->getStateUsing(function ($record) {
-                           // $salida = '<div class="flex flex-col items-center justify-center">';
-                            return '<div class="flex flex-col items-center justify-center"><div>'. $record->email.'</div><div>'.$record->phone.'</div></div>';
+                            // $salida = '<div class="flex flex-col items-center justify-center">';
+                            return '<div class="flex flex-col items-center justify-center"><div>' . $record->email . '</div><div>' . $record->phone . '</div></div>';
                         }),
-                 /*
-                    Tables\Columns\TextColumn::make('phone')
-                        ->label('Teléfono')
-                        ->icon('heroicon-o-phone')
-                        ->iconColor('secondary'),
-                    Tables\Columns\TextColumn::make('email')
-                        ->icon('heroicon-o-envelope')
-                        ->iconColor('info')
-                        ->copyable()
-                        ->copyMessage('Email address copied')
-                        ->copyMessageDuration(1500)
-                        ->searchable(),*/
+                    /*
+                       Tables\Columns\TextColumn::make('phone')
+                           ->label('Teléfono')
+                           ->icon('heroicon-o-phone')
+                           ->iconColor('secondary'),
+                       Tables\Columns\TextColumn::make('email')
+                           ->icon('heroicon-o-envelope')
+                           ->iconColor('info')
+                           ->copyable()
+                           ->copyMessage('Email address copied')
+                           ->copyMessageDuration(1500)
+                           ->searchable(),*/
                     Tables\Columns\TextColumn::make('patient.name')
                         ->label('Mascotas')
                         ->sortable()
@@ -138,9 +138,10 @@
                             TextEntry::make('mascotas')
                                 ->label('Mascotas')
                                 ->getStateUsing(
-                                    fn($record) => collect($record->patients)
-                                        ->pluck('name')
-                                        ->map(fn($name) => $name))
+                                //   $div = '<div class="flex flex-col items-center justify-center">'
+                                    fn($record) => collect($record->patient)
+                                        ->pluck('id', 'name', 'type')
+                                        ->map(fn($id, $name) => '<a href=/admin/patients/' . $id . '>' . $name . '</a>'))
                                 ->colors(['warning',])
                                 ->badge()
                                 ->html(),

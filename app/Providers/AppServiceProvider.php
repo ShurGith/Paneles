@@ -2,6 +2,7 @@
 
     namespace App\Providers;
 
+    use Filament\Infolists\Infolist;
     use Filament\Support\Facades\FilamentView;
     use Filament\View\PanelsRenderHook;
     use Illuminate\Support\Facades\Blade;
@@ -14,6 +15,7 @@
          */
         public function boot(): void
         {
+            Infolist::$defaultNumberLocale = 'es';
 
         }
 
