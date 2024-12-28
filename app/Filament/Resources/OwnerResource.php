@@ -8,6 +8,7 @@
     use Filament\Forms;
     use Filament\Forms\Form;
     use Filament\Infolists\Components\ImageEntry;
+    use Filament\Infolists\Components\Section;
     use Filament\Infolists\Components\TextEntry;
     use Filament\Infolists\Infolist;
     use Filament\Resources\Resource;
@@ -33,12 +34,6 @@
         {
             return 'Propietario'; // Cambiar el título singular si es necesario
         }
-
-//        public static function getTitle(): string
-//        {
-//            return 'Mostrando'; // Cambia "View" por "Mostrando"
-//        }
-
 
         public static function form(Form $form): Form
         {
@@ -78,13 +73,9 @@
                         ->copyMessage('Email address copied')
                         ->copyMessageDuration(1500)
                         ->searchable(),
-                    Tables\Columns\TextColumn::make('mascotas')
+                    Tables\Columns\TextColumn::make('patient.name')
                         ->label('Mascotas')
-                        ->getStateUsing(
-                            fn($record) => collect($record->patients)
-                                ->pluck('name')
-                                ->map(fn($name) => $name)
-                        )
+                        ->sortable()
                         ->colors([
                             'warning',
                         ])
@@ -96,8 +87,12 @@
                 ->actions([
                     Tables\Actions\ViewAction::make()
                         ->slideOver()
-                        ->color('info'),
+                        ->button()
+                        ->icon('heroicon-o-eye')
+                        ->color('info')
+                        ->modalWidth('full')->modalHeading(fn ($record) => $record->name),
                     Tables\Actions\EditAction::make()
+                        ->button()
                         ->slideOver(),
                 ])
                 ->bulkActions([
@@ -111,36 +106,39 @@
         {
             return $infolist
                 ->schema([
-                    TextEntry::make('name')
-                        ->label('Nombre'),
-                    ImageEntry::make('photo')
-                        ->label('Foto')
-                        ->circular()
-                        ->defaultImageUrl(function ($record) {
-                            return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
-                        }),
-                    TextEntry::make('phone')
-                        ->label('Teléfono')
-                        ->icon('heroicon-o-phone')
-                        ->iconColor('secondary'),
-                    TextEntry::make('email')
-                        ->icon('heroicon-o-envelope')
-                        ->iconColor('info')
-                        ->copyable()
-                        ->copyMessage('Email address copied')
-                        ->copyMessageDuration(1500),
-                    TextEntry::make('mascotas')
-                        ->label('Mascotas')
-                        ->getStateUsing(
-                            fn($record) => collect($record->patients)
-                                ->pluck('name')
-                                ->map(fn($name) => $name)
-                        )
-                        ->colors([
-                            'warning',
+                    Section::make(fn ($record) => $record->name)
+                        ->description('Images used in the page layout.')
+                        ->schema([
+                            TextEntry::make('name')
+                                ->label('Nombre'),
+                            ImageEntry::make('photo')
+                                ->label('Foto')
+                                ->circular()
+                                ->defaultImageUrl(function ($record) {
+                                    return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
+                                }),
+                            TextEntry::make('phone')
+                                ->label('Teléfono')
+                                ->icon('heroicon-o-phone')
+                                ->iconColor('secondary'),
+                            TextEntry::make('email')
+                                ->icon('heroicon-o-envelope')
+                                ->iconColor('info')
+                                ->copyable()
+                                ->copyMessage('Email address copied')
+                                ->copyMessageDuration(1500),
+                            TextEntry::make('mascotas')
+                                ->label('Mascotas')
+                                ->getStateUsing(
+                                    fn($record) => collect($record->patients)
+                                        ->pluck('name')
+                                        ->map(fn($name) => $name))
+                                ->colors(['warning',])
+                                ->badge()
+                                ->html(),
                         ])
-                        ->badge(),
                 ]);
+
         }
 
         public static function getRelations(): array
@@ -156,7 +154,7 @@
                 'index' => Pages\ListOwners::route('/'),
                 'create' => Pages\CreateOwner::route('/create'),
                 //'edit' => Pages\EditOwner::route('/{record}/edit'),
-                'view' => Pages\ViewOwner::route('/{record}'),
+                //'view' => Pages\ViewOwner::route('/{record}'),
             ];
         }
 

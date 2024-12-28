@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('photo')->nullable();
+           // $table->unsignedBigInteger('patient_id');
             $table->timestamps();
         });
 

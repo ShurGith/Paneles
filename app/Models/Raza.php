@@ -15,6 +15,7 @@
 
         protected $guarded = [];
 
+
         public function animal(): BelongsTo
         {
             return $this->belongsTo(Animal::class);

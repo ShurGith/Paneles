@@ -5,6 +5,7 @@
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\HasOne;
     use Illuminate\Notifications\Notifiable;
 
     class Animal extends Model
@@ -18,6 +19,10 @@
 
         public function raza(): HasMany
         {
-            return $this->hasMany(Raza::class);
+            return $this->HasMany(Raza::class);
+        }
+        public function patient(): HasMany
+        {
+            return $this->hasMany(Patient::class);
         }
     }

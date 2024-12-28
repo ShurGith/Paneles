@@ -28,7 +28,7 @@
                 'raza_id' => intval($razaId),
                 'animal_id' => intval($animalId),
                 'owner_id' => rand(Owner::min('id'), Owner::max('id')),
-                'user_id' => rand(1, User::count()),
+               // 'user_id' => rand(1, User::count()),
                 'created_at' => Carbon::now()
             ];
         }

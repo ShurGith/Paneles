@@ -17,10 +17,11 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('photo')->nullable();
                 $table->enum('gender', ['Macho', 'Hembra'])->nullable();
-                $table->bigInteger('user_id');
-                $table->bigInteger('animal_id');
-                $table->bigInteger('raza_id');
-                $table->bigInteger('owner_id');
+                //Relaciones
+                $table->unsignedInteger('owner_id');
+                $table->unsignedInteger('animal_id');
+                $table->unsignedInteger('raza_id');
+                $table->unsignedInteger('treatment_id')->nullable();
                 $table->timestamps();
         });
     }

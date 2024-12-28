@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->boolean('es_activo')->default(true);
             $table->timestamp('email_verified_at')->nullable();
+            //$table->unsignedBigInteger('patient_id');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

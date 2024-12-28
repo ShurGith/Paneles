@@ -76,7 +76,12 @@
                         ->label('Propietario')
                         ->searchable()
                         ->sortable(),
-                    TextColumn::make('user.name')->label('Veterinario'),
+                    TextColumn::make('treatment')
+                        ->label('Consultas')
+                        ->getStateUsing(
+                            fn($record) => collect($record->treatment)
+                                ->count()
+                        )
                 ])
                 ->filters([
                     //
@@ -168,13 +173,13 @@
                                 ->circleCropper(),
                         ])
                         ->required(),
-                    Select::make('user_id')
+               /*     Select::make('user_id')
                         ->relationship('user', 'name')
                         ->label('Veterinario')
                         ->placeholder('Vete que tome el paciente')
                         ->searchable()
                         ->preload()
-                        ->required(),
+                        ->required(),*/
                 ]);
         }
 

@@ -34,6 +34,7 @@
                 'phone' => '188898721',
                 'password' => Hash::make('1234'),
             ]);
+
             $animales = ['Gato', 'Perro', 'Pez', 'Tortuga', 'Gallina', 'Loro', 'Vaca', 'Caballo'];
             foreach ($animales as $animal) {
                 Animal::factory()->create([
@@ -46,10 +47,10 @@
             foreach ($razasAnimales as $raza) {
                 Raza::factory()->create([
                     'name' => $raza,
-                    'animal_id' => Animal::inRandomOrder()->value('id'),
+                    'animal_id' => rand(1, Animal::count()),
+
                 ]);
             }
-
 
             User::factory(10)->create();
             Owner::factory(10)->create();
