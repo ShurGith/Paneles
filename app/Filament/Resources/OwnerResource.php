@@ -62,6 +62,14 @@
                         ->label('Nombre')
                         ->sortable()
                         ->searchable(),
+                    Tables\Columns\TextColumn::make('combined_column')
+                        ->label('Telf. y Correo')
+                        ->html()
+                        ->getStateUsing(function ($record) {
+                           // $salida = '<div class="flex flex-col items-center justify-center">';
+                            return '<div class="flex flex-col items-center justify-center"><div>'. $record->email.'</div><div>'.$record->phone.'</div></div>';
+                        }),
+                 /*
                     Tables\Columns\TextColumn::make('phone')
                         ->label('Teléfono')
                         ->icon('heroicon-o-phone')
@@ -72,7 +80,7 @@
                         ->copyable()
                         ->copyMessage('Email address copied')
                         ->copyMessageDuration(1500)
-                        ->searchable(),
+                        ->searchable(),*/
                     Tables\Columns\TextColumn::make('patient.name')
                         ->label('Mascotas')
                         ->sortable()
@@ -90,7 +98,7 @@
                         ->button()
                         ->icon('heroicon-o-eye')
                         ->color('info')
-                        ->modalWidth('full')->modalHeading(fn ($record) => $record->name),
+                        ->modalWidth('full')->modalHeading(fn($record) => $record->name),
                     Tables\Actions\EditAction::make()
                         ->button()
                         ->slideOver(),
@@ -106,7 +114,7 @@
         {
             return $infolist
                 ->schema([
-                    Section::make(fn ($record) => $record->name)
+                    Section::make(fn($record) => $record->name)
                         ->description('Images used in the page layout.')
                         ->schema([
                             TextEntry::make('name')
