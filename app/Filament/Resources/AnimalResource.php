@@ -16,7 +16,8 @@
     {
         protected static ?string $model = Animal::class;
         protected static ?string $navigationLabel = "Nombres Animales";
-        protected static ?string $navigationIcon = 'icon-laravel';//'heroicon-o-gift-top';
+        protected static ?string $navigationIcon = 'icon-elephant_icon';
+        protected static ?string $activeNavigationIcon = 'icon-elephant_activo';
         protected static ?string $navigationGroup = 'Datos Genéricos';
         protected static ?int $navigationSort = 10;
 
@@ -28,7 +29,7 @@
                     TextInput::make('name')
                         ->label('Animal')
                         ->helperText('Es el tipo de animal Ejemplos: Perro, Gato ')
-                        //   ->hint('Usaremosste  correo para enviarte notificaciones.')
+                        //   ->hint('Usaremos este  correo para enviarte notificaciones.')
                         ->suffixIcon('heroicon-m-globe-alt')
                         ->suffixIconColor('secondary'),
                     /*                    Select::make('razas')
@@ -59,10 +60,6 @@
                 ->filters([
                     //
                 ])
-                /*            ->headerActions([
-                                Tables\Actions\CreateAction::make()
-                                ->slideOver(),
-                            ])*/
                 ->actions([
                     Tables\Actions\EditAction::make()
                         ->slideOver(),

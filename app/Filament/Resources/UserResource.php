@@ -16,7 +16,9 @@
     {
         protected static ?string $model = User::class;
         protected static ?string $navigationLabel = "Veterinarios";
-        protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+        protected static ?string $navigationIcon = 'icon-medico';//'heroicon-o-identification';
+        protected static ?string $activeNavigationIcon = 'icon-medico_notas';//'heroicon-o-document-text';
         protected static ?string $navigationGroup = 'Listado';
         //protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
         protected static ?int $navigationSort = 1;

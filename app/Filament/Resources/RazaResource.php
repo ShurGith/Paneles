@@ -11,13 +11,14 @@
     use Filament\Forms\Get;
     use Filament\Resources\Resource;
     use Filament\Tables;
+    use Filament\Tables\Columns\TextColumn;
     use Filament\Tables\Table;
 
     class RazaResource extends Resource
     {
         protected static ?string $model = Raza::class;
 
-        protected static ?string $navigationLabel = "Razas Animales";
+        protected static ?string $navigationLabel = "Configurar Razas";
         protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
         protected static ?string $navigationGroup = 'Datos Genéricos';
         protected static ?int $navigationSort = 11;
@@ -45,23 +46,30 @@
         {
             return $table
                 ->columns([
-                    Tables\Columns\TextColumn::make('name')
+                    TextColumn::make('name')
                         ->label('Raza')
+                        ->html()
                         ->sortable()
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('animal.name')
+                        ->tooltip(function ($record) {
+                            return $record->animal->name;
+                        })
+                        ->getStateUsing(function ($record) {
+                            return $record->name . '<img class="w-10 h-10" src="/storage/images/animales/' . $record->animal->name . '.png">';
+                        }),
+                    TextColumn::make('animal.name')
                         ->label('Animal')
                         ->sortable()
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('created_at')
+                        ->width('70%'),
+                    TextColumn::make('created_at')
                         ->dateTime()
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextColumn::make('updated_at')
+                    TextColumn::make('updated_at')
                         ->dateTime()
                         ->sortable()
-                        ->toggleable(isToggledHiddenByDefault: true),
-                ])->defaultSort('animal.name')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                ])
+                ->defaultSort('animal.name')
                 ->filters([
                     //
                 ])

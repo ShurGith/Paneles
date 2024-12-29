@@ -19,7 +19,9 @@
     {
         protected static ?string $model = Owner::class;
         protected static ?string $navigationLabel = "Propietarios";
-        protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+
+        protected static ?string $navigationIcon = 'icon-owner';//'heroicon-o-identification';
+        protected static ?string $activeNavigationIcon = 'icon-owner_edit';//'heroicon-o-document-text';
         protected static ?string $navigationGroup = 'Listado';
         protected static ?int $navigationSort = 2;
 
