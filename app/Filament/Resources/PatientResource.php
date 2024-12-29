@@ -13,13 +13,13 @@
     use Filament\Forms\Form;
     use Filament\Forms\Get;
     use Filament\Forms\Set;
-    use Filament\Infolists\Components\Group;
     use Filament\Infolists\Components\ImageEntry;
     use Filament\Infolists\Components\RepeatableEntry;
     use Filament\Infolists\Components\Section;
     use Filament\Infolists\Components\TextEntry;
     use Filament\Infolists\Infolist;
     use Filament\Resources\Resource;
+    use Filament\Support\Enums\FontWeight;
     use Filament\Tables\Actions\BulkActionGroup;
     use Filament\Tables\Actions\DeleteAction;
     use Filament\Tables\Actions\DeleteBulkAction;
@@ -28,7 +28,6 @@
     use Filament\Tables\Columns\ImageColumn;
     use Filament\Tables\Columns\TextColumn;
     use Filament\Tables\Table;
-    use Illuminate\Database\Query\Builder;
     use Illuminate\Support\Collection;
     use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -124,7 +123,6 @@
                         ->preload()
                         ->live()
                         ->afterStateUpdated(fn(Set $set) => $set('razas', null)),
-
                     DatePicker::make('date_of_birth')
                         ->label('Fecha de Nacimiento')
                         ->default(now())
@@ -166,22 +164,47 @@
         {
             return $infolist
                 ->schema([
-                    Section::make(fn($record) => $record->name)
-                        ->description((function ($record) {
-                            return 'Paciente creado el ' . $record->created_at->format('l d F Y');
-                        }))
+                    Section::make()
+                        /*           ->description((function ($record) {
+                                       return 'Paciente creado el ' . $record->created_at->format('l d F Y');
+                                   }))*/
                         ->columns([
                             'default' => 4,
                         ])
                         ->schema([
-                            ImageEntry::make('photo')
-                                ->label('Foto')
-                                ->circular()
-                                ->defaultImageUrl(function ($record) {
-                                    return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
-                                }),
+                            Section::make()
+                                // ->description(fn($record) => $record->raza->name)
+                                ->columnSpan(1)
+                                ->schema([
+                                    ImageEntry::make('photo')
+                                        ->label('')
+                                        ->circular()
+                                        ->defaultImageUrl(function ($record) {
+                                            return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
+                                        }),
+                                    TextEntry::make('name')
+                                        ->label('')
+                                        ->size(TextEntry\TextEntrySize::Large)
+                                        ->weight(FontWeight::Bold)
+                                        ->html(),
+                                    TextEntry::make('raza.name')
+                                        ->label('')
+                                        ->getStateUsing(function($record) {
+                                            return $record->animal->name.' - '.$record->raza->name .' <br>'.$record->gender;
+                                        })
+                                    ->html(),
+                                    //    ->getStateUsing(fn($record) => $record->gender),
+                                    TextEntry::make('owner.name')
+                                        ->label('Propietario'),
+                                    TextEntry::make('owner.phone')
+                                        ->icon('heroicon-o-phone')
+                                        ->label(''),
+                                    TextEntry::make('owner.email')
+                                        ->icon('heroicon-o-envelope')
+                                        ->label(''),
+                                ]),
                             RepeatableEntry::make('treatment')
-                                  ->label('Consultas')
+                                ->label('Consultas')
                                 ->columnSpan(3)
                                 ->columns(2)
                                 ->schema([
@@ -194,7 +217,6 @@
                                             return ucfirst($record->created_at->format('l d F Y'));
                                         }))
                                         ->label('Fecha de consulta'),
-
                                     TextEntry::make('description')
                                         ->columnSpan(2)
                                         ->html(),
