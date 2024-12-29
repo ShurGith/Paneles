@@ -36,6 +36,6 @@
 
         public function treatment(): HasMany
         {
-            return $this->hasMany(Treatment::class);
+            return $this->hasMany(Treatment::class)->orderBy('created_at', 'desc');
         }
     }

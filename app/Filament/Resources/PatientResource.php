@@ -13,6 +13,7 @@
     use Filament\Forms\Form;
     use Filament\Forms\Get;
     use Filament\Forms\Set;
+    use Filament\Infolists\Components\Group;
     use Filament\Infolists\Components\ImageEntry;
     use Filament\Infolists\Components\RepeatableEntry;
     use Filament\Infolists\Components\Section;
@@ -27,6 +28,7 @@
     use Filament\Tables\Columns\ImageColumn;
     use Filament\Tables\Columns\TextColumn;
     use Filament\Tables\Table;
+    use Illuminate\Database\Query\Builder;
     use Illuminate\Support\Collection;
     use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -55,11 +57,6 @@
                     TextColumn::make('gender')->label('Sexo'),
                     TextColumn::make('raza.name')->label('Raza')
                         ->badge(),
-                    //  ->description(),
-                    // TextColumn::make('type')->label('Animal'),
-                    /*  TextColumn::make('date_of_birth')
-                          ->label('Año Nacimiento')
-                          ->date('Y'),*/
                     TextColumn::make('owner.name')
                         ->label('Propietario')
                         ->searchable()
@@ -71,6 +68,7 @@
                                 ->count()
                         )
                 ])
+                ->defaultSort('name')
                 ->filters([
                     //
                 ])
@@ -183,13 +181,10 @@
                                     return 'https://ui-avatars.com/api/?background=random&color=fff&name=' . urlencode($record->name);
                                 }),
                             RepeatableEntry::make('treatment')
-                                ->label('Consultas')
+                                  ->label('Consultas')
                                 ->columnSpan(3)
                                 ->columns(2)
                                 ->schema([
-                                    //  Section::make('Datos')
-//                                        ->columns(2)
-//                                        ->schema([
                                     TextEntry::make('price')
                                         ->money('EUR', divideBy: 100)
                                         ->prefix('Total: ')
@@ -206,7 +201,6 @@
                                     TextEntry::make('notes')
                                         ->columnSpan(2)
                                         ->html(),
-                                    //      ]),
                                 ]),
                         ])
 

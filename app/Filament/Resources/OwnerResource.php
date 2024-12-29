@@ -66,7 +66,6 @@
                         ->label('Telf. y Correo')
                         ->html()
                         ->getStateUsing(function ($record) {
-                            // $salida = '<div class="flex flex-col items-center justify-center">';
                             return '<div class="flex flex-col items-center justify-center"><div>' . $record->email . '</div><div>' . $record->phone . '</div></div>';
                         }),
                     /*
@@ -87,6 +86,12 @@
                         ->colors([
                             'warning',
                         ])
+                        ->badge(),
+                    Tables\Columns\TextColumn::make('treatment.price')
+                        ->label('Facturas')
+                        ->money('EUR', divideBy: 100)
+                        ->prefix('Total: ')
+                        ->color('info')
                         ->badge(),
                 ])
                 ->filters([
@@ -138,13 +143,19 @@
                             TextEntry::make('mascotas')
                                 ->label('Mascotas')
                                 ->getStateUsing(
-                                //   $div = '<div class="flex flex-col items-center justify-center">'
                                     fn($record) => collect($record->patient)
-                                        ->pluck('id', 'name', 'type')
-                                        ->map(fn($id, $name) => '<a href=/admin/patients/' . $id . '>' . $name . '</a>'))
+                                        ->pluck('id', 'name')
+                                        ->map(fn($id, $name) => '<a href="/admin/patients/' . $id . '">' . $name . '</a>'))
                                 ->colors(['warning',])
-                                ->badge()
-                                ->html(),
+                                ->html()
+                                ->badge(),
+                            TextEntry::make('treatment.price')
+                                ->label('Facturas')
+                                ->money('EUR', divideBy: 100)
+                                ->prefix('Total: ')
+                                ->color('info')
+                                ->badge(),
+
                         ])
                 ]);
 

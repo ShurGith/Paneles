@@ -5,6 +5,7 @@
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Relations\HasMany;
+    use Illuminate\Database\Eloquent\Relations\HasManyThrough;
     use Illuminate\Notifications\Notifiable;
 
     class Owner extends Model
@@ -13,9 +14,9 @@
 
         protected $guarded = [];
 
-        public function treatment(): HasMany
+        public function treatment(): HasManyThrough
         {
-            return $this->hasMany(Treatment::class);
+            return $this->hasManyThrough(Treatment::class, Patient::class);
         }
 
         public function patient(): HasMany
