@@ -165,15 +165,11 @@
             return $infolist
                 ->schema([
                     Section::make()
-                        /*           ->description((function ($record) {
-                                       return 'Paciente creado el ' . $record->created_at->format('l d F Y');
-                                   }))*/
                         ->columns([
                             'default' => 4,
                         ])
                         ->schema([
                             Section::make()
-                                // ->description(fn($record) => $record->raza->name)
                                 ->columnSpan(1)
                                 ->schema([
                                     ImageEntry::make('photo')
@@ -184,16 +180,16 @@
                                         }),
                                     TextEntry::make('name')
                                         ->label('')
-                                        ->size(TextEntry\TextEntrySize::Large)
-                                        ->weight(FontWeight::Bold)
-                                        ->html(),
-                                    TextEntry::make('raza.name')
-                                        ->label('')
-                                        ->getStateUsing(function($record) {
-                                            return $record->animal->name.' - '.$record->raza->name .' <br>'.$record->gender;
+                                        ->getStateUsing(function ($record) {
+                                            return '<div class="min-w-64 px-6 py-2 text-center border border-gray-200 dark:border-gray-700 rounded-lg">
+                                                    <p class="font-bold text-3xl text-gray-900 dark:text-white">' . $record->name . '</p>
+                                                    <p class="font-bold text-gray-900 dark:text-white">' . $record->animal->name . ' - ' . $record->raza->name . '</p>
+                                                    <p class="font-bold  dark:text-white">' . $record->gender . '</p>
+                                                   </div>';
                                         })
-                                    ->html(),
-                                    //    ->getStateUsing(fn($record) => $record->gender),
+                                        /*     ->color('success')
+                                              ->badge(),*/
+                                        ->html(),
                                     TextEntry::make('owner.name')
                                         ->label('Propietario'),
                                     TextEntry::make('owner.phone')
