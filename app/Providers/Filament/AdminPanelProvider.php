@@ -21,6 +21,7 @@
     use Illuminate\Routing\Middleware\SubstituteBindings;
     use Illuminate\Session\Middleware\StartSession;
     use Illuminate\View\Middleware\ShareErrorsFromSession;
+    use Saasykit\FilamentOops\FilamentOopsPlugin;
 
 
     class AdminPanelProvider extends PanelProvider
@@ -86,6 +87,7 @@
                 ])
                 ->plugins([
                     HooksHelperPlugin::make(),
+                    FilamentOopsPlugin::make()->addEnvironment('local', 'Local', '#008000'),
                 ])
                 ->authMiddleware([
                     Authenticate::class,
